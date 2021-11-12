@@ -163,6 +163,7 @@ const options = {
   actions: [
     {
       methodName: 'sayHi',
+      args: {},
       gas: parseNearAmount('0.00000000003'),
       deposit: parseNearAmount('0.00125'),
     },
