@@ -115,6 +115,29 @@ window.wallet.onAccountChanged((changedAccountId) => {
 });
 ```
 
+## Send NEAR to others
+
+##### Method: sendMoney
+
+```javascript
+/**
+ * @param {*} receiverId received account id
+ * @param {*} amount send near amount
+ */
+sendMoney = ({ receiverId, amount })
+```
+
+##### Example
+
+```javascript
+const res = await window.wallet.sendMoney({
+  receiverId: 'xxx.testnet',
+  amount: parseNearAmount('1'),
+})
+
+console.log('send near res: ', res);
+```
+
 ## Sign and send transaction
 
 ##### Method: signAndSendTransaction
@@ -122,38 +145,28 @@ window.wallet.onAccountChanged((changedAccountId) => {
 ```javascript
 /**
 * 
-* @param {*} contractId contract account id
-* @param {*} methodName contract method name
 * @param {*} receiverId receiver account id
-* @param {*} amount transfer near amount
-* @param {*} params function call arguments
-* @param {*} gas transaction gas
-* @param {*} deposit transaction attached deposit
+* @param {*} actions function call actions { methodName, args, gas, deposit, msg }
 * @param {*} usingAccessKey If 'true', will using access key to make function call and no need to request user to sign this transaction. Set 'false' will popup a notification window to request user to sign this transaction.
 * 
 * @returns the result of send transaction
 */
-signAndSendTransaction({ contractId, methodName, receiverId, amount, params, gas, deposit, usingAccessKey })
+signAndSendTransaction = ({ receiverId, actions, usingAccessKey = false })
 ```
 
 ##### Examples
 ```javascript
-// Normal transfer
-// Transfer NEAR to others
-const options = {
-  receiverId: 'xxxx.testnet',
-  amount: parseNearAmount('1'),
-  usingAccessKey: false,
-}
-const res = await window.wallet.signAndSendTransaction(options);
-```
-
-```javascript
 // Contract method function call
 // Say hi to the contract by using access key
 const options = {
-  contractId: 'dev-1635836502908-29682237937904',
-  methodName: 'sayHi',
+  receiverId: 'dev-1635836502908-29682237937904',
+  actions: [
+    {
+      methodName: 'sayHi',
+      gas: parseNearAmount('0.00000000003'),
+      deposit: parseNearAmount('0.00125'),
+    },
+  ],
   usingAccessKey: true,
 }
 const res = await window.wallet.signAndSendTransaction(options);
@@ -163,14 +176,18 @@ const res = await window.wallet.signAndSendTransaction(options);
 // Contract method function call
 // Deposit storage to wrap.testnet
 const options = {
-  contractId: 'wrap.testnet',
-  methodName: 'storage_deposit',
-  params: {
-    account_id: window.wallet.accountId,
-    registration_only: true,
-  },
-  gas: parseNearAmount('0.00000000003'),
-  deposit: parseNearAmount('0.00125'),
+  receiverId: 'wrap.testnet',
+  actions: [
+    { 
+      methodName: 'storage_deposit',
+      args: {
+        account_id: 'xxx.testnet',
+        registration_only: true,
+      },
+      gas: parseNearAmount('0.00000000003'),
+      deposit: parseNearAmount('0.00125'),
+    },
+  ],
 }
 const res = await window.wallet.signAndSendTransaction(options);
 ```
@@ -178,31 +195,25 @@ const res = await window.wallet.signAndSendTransaction(options);
 
 ```javascript
 // Contract method function call
-// Swap NEAR to wNEAR
+// Swap NEAR to wNEAR, then transfer wNEAR to others
 const options = {
-  contractId: 'wrap.testnet',
-  methodName: 'near_deposit',
-  deposit: parseNearAmount('1'),
-  gas, // optional
-  deposit, // optional,
-  usingAccessKey: false,
-}
-const res = await window.wallet.signAndSendTransaction(options);
-```
-
-```javascript
-// Contract method function call
-// Send wNEAR to others
-const options = {
-  contractId: 'wrap.testnet',
-  methodName: 'ft_transfer',
-  params: {
-    received_id: 'xxxx.testnet',
-    amount: '1000000000000000000',
-  },
-  gas, // optional
-  deposit, // optional,
-  usingAccessKey: false,
+  receiverId: 'wrap.testnet',
+  actions: [
+    {
+      methodName: 'near_deposit',
+      args: {},
+      deposit: parseNearAmount('1'),
+    },
+    {
+      methodName: 'ft_transfer',
+      args: {
+        received_id: 'xxxx.testnet',
+        amount: '1000000000000000000',
+      },
+      gas: parseNearAmount('0.00000000003'),
+      deposit: parseNearAmount('0.00125'),
+    }
+  ]
 }
 const res = await window.wallet.signAndSendTransaction(options);
 ```
