@@ -218,3 +218,29 @@ const options = {
 }
 const res = await window.wallet.signAndSendTransaction(options);
 ```
+
+## View Function Call
+
+##### Method: viewFunctionCall
+
+```javascript
+/**
+ * Make a view function call
+ * @param {*} contractId contract account id
+ * @param {*} method function call method
+ * @param {*} params function call params
+ * @returns 
+ */
+viewFunctionCall = ({ contractId, method, params = {} })
+```
+
+##### Example
+
+```javascript
+res = await window.wallet.viewFunctionCall({
+  contractId: 'dev-1635836502908-29682237937904',
+  method: 'whoSaidHi',
+})
+
+console.log('Who Saied Hi response: ', res);
+```
