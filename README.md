@@ -219,6 +219,53 @@ const options = {
 const res = await window.wallet.signAndSendTransaction(options);
 ```
 
+## Sign and send batch transactions
+
+##### Method: requestSignTransactions
+
+```javascript
+/**
+ * 
+ * @param {*} transactions transaction list
+ * @param {*} usingAccessKey If 'true', will using access key to make function call and no need to request user to sign this transaction. Set 'false' will popup a notification window to request user to sign this transaction.
+ * @returns
+ */
+requestSignTransactions = ({ transactions, usingAccessKey = false })
+```
+
+##### Example
+
+```javascript
+const transactions = [
+  {
+    receiverId: wNearContractId,
+    actions: [
+      {
+        methodName: 'near_deposit',
+        args: {},
+        amount: '100000000000000000000000',
+      },
+    ]
+  },
+  {
+    receiverId: wNearContractId,
+    actions: [
+      {
+        methodName: 'ft_transfer',
+        args: {
+          receiver_id: 'amazingbeerbelly.testnet',
+          amount: '1000000000000000000',
+        },
+      }
+    ]
+  }
+];
+
+const res = await window.wallet.requestSignTransactions({ transactions });
+
+console.log('Swap and Send wNEAR with requestSignTransactions response: ', res);
+```
+
 ## View Function Call
 
 ##### Method: viewFunctionCall
