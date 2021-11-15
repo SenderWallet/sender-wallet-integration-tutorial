@@ -81,7 +81,7 @@ window.wallet.signOut();
 
 ```javascript
 /**
-* Check the current account is signed in with initial contract
+* Check the current account is signed in the initial contract
 * @returns true or false
 */
 isSignedIn()
@@ -95,7 +95,7 @@ if (window.wallet.isSignedIn()) {
 }
 ```
 
-## Listen the current accmount changed
+## Listen the current account changed
 
 ##### Method: onAccountChanged
 
@@ -147,32 +147,13 @@ console.log('send near res: ', res);
 * 
 * @param {*} receiverId receiver account id
 * @param {*} actions function call actions { methodName, args, gas, deposit, msg }
-* @param {*} usingAccessKey If 'true', will using access key to make function call and no need to request user to sign this transaction. Set 'false' will popup a notification window to request user to sign this transaction.
 * 
 * @returns the result of send transaction
 */
-signAndSendTransaction = ({ receiverId, actions, usingAccessKey = false })
+signAndSendTransaction = ({ receiverId, actions })
 ```
 
 ##### Examples
-```javascript
-// Contract method function call
-// Say hi to the contract by using access key
-const options = {
-  receiverId: 'dev-1635836502908-29682237937904',
-  actions: [
-    {
-      methodName: 'sayHi',
-      args: {},
-      gas: parseNearAmount('0.00000000003'),
-      deposit: parseNearAmount('0.00125'),
-    },
-  ],
-  usingAccessKey: true,
-}
-const res = await window.wallet.signAndSendTransaction(options);
-```
-
 ```javascript
 // Contract method function call
 // Deposit storage to wrap.testnet
@@ -227,10 +208,9 @@ const res = await window.wallet.signAndSendTransaction(options);
 /**
  * 
  * @param {*} transactions transaction list
- * @param {*} usingAccessKey If 'true', will using access key to make function call and no need to request user to sign this transaction. Set 'false' will popup a notification window to request user to sign this transaction.
  * @returns
  */
-requestSignTransactions = ({ transactions, usingAccessKey = false })
+requestSignTransactions = ({ transactions })
 ```
 
 ##### Example
