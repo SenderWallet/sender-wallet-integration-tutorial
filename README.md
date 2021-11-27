@@ -38,6 +38,24 @@ getAccountId()
 const accuntId = window.wallet.getAccountId();
 ```
 
+## Get current rpc information
+
+##### Method: getRpc
+
+```javascript
+/**
+* 
+* @returns current rpc information: { method: 'getRpc', rpc: { nodeUrl: 'xxx', networkId: 'xxx', ... }, ... }
+*/
+getRpc()
+```
+
+##### Example
+
+```javascript
+const response = window.wallet.getRpc();
+```
+
 ## Request sign in
 
 ##### Method: requestSignIn
@@ -112,6 +130,26 @@ onAccountChanged(callback)
 ```javascript
 window.wallet.onAccountChanged((changedAccountId) => {
   // TODO if account has changed
+});
+```
+
+## Listen the current rpc changed
+
+##### Method: onRpcChanged
+
+```javascript
+/**
+* Listen the current rpc changed
+* @param {*} callback (rpc) => { "TODO if rpc has changed" }
+*/
+onRpcChanged(callback)
+```
+
+##### Example
+
+```javascript
+window.wallet.onRpcChanged((response) => {
+  // TODO if rpc has changed
 });
 ```
 
@@ -244,30 +282,4 @@ const transactions = [
 const res = await window.wallet.requestSignTransactions({ transactions });
 
 console.log('Swap and Send wNEAR with requestSignTransactions response: ', res);
-```
-
-## View Function Call
-
-##### Method: viewFunctionCall
-
-```javascript
-/**
- * Make a view function call
- * @param {*} contractId contract account id
- * @param {*} methodName function call method name
- * @param {*} params function call params
- * @returns 
- */
-viewFunctionCall = ({ contractId, methodName, params = {} })
-```
-
-##### Example
-
-```javascript
-res = await window.wallet.viewFunctionCall({
-  contractId: 'dev-1635836502908-29682237937904',
-  methodName: 'whoSaidHi',
-})
-
-console.log('Who Saied Hi response: ', res);
 ```
